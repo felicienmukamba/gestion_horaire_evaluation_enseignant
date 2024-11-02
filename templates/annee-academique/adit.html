@@ -1,0 +1,77 @@
+<!-- Modal -->
+<div class="modal fade" id="modelEditeranneeacademique" tabindex="-1" role="dialog"  aria-hidden="true"> 
+    <div class="modal-dialog" role="document"> 
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Ajouter Ponderation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+            <form  id="submitFormanneeacademiqueEdit">
+                    <span id="idanneeacademique" hidden></span>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">designation</label>
+                            <input required type="text" class="form-control" name="designation" id="designationanneeacademique" aria-describedby="helpId" placeholder="">
+                            <small id="helpId" class="form-text text-muted">designation</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id='submitCanceledanneeacademiqueFormEdit' data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+                
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#submitCanceledanneeacademiqueFormEdit').on('click', function(event) {
+        event.preventDefault();
+        $("#modelEditeranneeacademique").modal('hide'); 
+    }) 
+
+    $('.launchEditanneeacademique').click(function() {
+        var itemId = $(this).data('id');
+        
+        $('#idanneeacademique').val(itemId) 
+
+        var designation = $(this).attr('data-designation'); 
+
+        var anneeacademique = $(this).attr('data-anneeacademique');
+
+
+
+        $("#designationanneeacademique").val(designation)
+
+
+
+    }) 
+    
+    $('#submitFormanneeacademiqueEdit').on('submit', function(event){
+        event.preventDefault(); 
+        const formData = new FormData(this); 
+            // Remove classe and anneeacademique keys
+        formData.delete('anneeacademique');
+       var itemId=  $('#idanneeacademique').val() 
+        $.ajax({
+            url: `/annee-academique-edit/${itemId}/`, 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('Modification de la ponderation effectué avec succès'); 
+                window.location.href = ""; 
+            },
+            error: function(error) {
+                alert('Une errreur est survenue');
+            }
+        });
+
+    })
+</script>

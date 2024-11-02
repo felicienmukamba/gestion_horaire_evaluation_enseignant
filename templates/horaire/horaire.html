@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% load static %} 
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="container py-5">
+      <h1 class="text-center">Horaire des cours</h1>
+      <div>
+        <div class="card m-1">
+            <div class="d-flex justify-content-between">
+                <div class="card-header">
+                    <div class="card-title"><h1>{{horaire}}</h1></div>
+                  </div>
+                  <div class="card-header">
+                    <div class="card-title">
+                        <a href="" class="btn btn-dark text-decoration-none text-light btn-outline-danger">Imprimer l'horaire</a>
+                    </div>
+                  </div>
+            </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>PROMOTION</th>
+                    <th>JOURNEE</th>
+                    <th rowspan="3">HEURE</th>
+                    <th rowspan="3">LUNDI</th>
+                    <th rowspan="3">MARDI</th>
+                    <th rowspan="3">MERCREDI</th>
+                    <th rowspan="3">VENDREDI</th>
+                    <th rowspan="3">SAMEDI</th>
+  
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  
+
+{% endblock content %}

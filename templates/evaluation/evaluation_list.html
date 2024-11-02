@@ -1,0 +1,188 @@
+{% extends "../core/index.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header mb-0">
+            <h3 class="fw-bold mb-1">Gestion des Évaluations</h3>
+            <ul class="breadcrumbs mb-1">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Évaluations</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Liste</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12 card">
+                <div class="card-header">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="col-md-6">
+                            <h4>Liste des Évaluations ({{ current_date|date:"d M Y" }})</h4>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-secondary btn-round" data-bs-toggle="modal" data-bs-target="#modelSoumettreEvaluation" onclick="setEnseignantId('{{ enseignants.0.id }}')">
+                                <i class="fa fa-plus" title="Ajouter une nouvelle évaluation"></i> Soumettre Évaluation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="basic-datatables" class="display table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Note</th>
+                                    <th scope="col">Enseignant</th>
+                                    <th scope="col">Étudiant</th>
+                                    <th scope="col" class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for evaluation in evaluations %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ evaluation.note }}</td>
+                                    <td>{{ evaluation.enseignant.nom }} {{ evaluation.enseignant.prenom }}</td>
+                                    <td>{{ evaluation.etudiant.nom }} {{ evaluation.etudiant.prenom }}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-primary launchEditEvaluation" data-bs-target="#modelEditEvaluation" data-bs-toggle="modal" data-id="{{ evaluation.id }}" data-note="{{ evaluation.note }}">
+                                            <i class="fa fa-edit text-light"></i>
+                                        </button>
+                                        <button class="btn btn-danger launchDeleteModalEvaluation" data-id="{{ evaluation.id }}">
+                                            <i class="fa fa-trash text-light"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination controls -->
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if evaluations.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ evaluations.previous_page_number }}">previous</a>
+                            {% endif %}
+                            <span class="current">
+                                Page {{ evaluations.number }} of {{ evaluations.paginator.num_pages }}.
+                            </span>
+                            {% if evaluations.has_next %}
+                                <a href="?page={{ evaluations.next_page_number }}">next</a>
+                                <a href="?page={{ evaluations.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for submitting an evaluation -->
+<div class="modal fade" id="modelSoumettreEvaluation" tabindex="-1" aria-labelledby="modelSoumettreEvaluationLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modelSoumettreEvaluationLabel">Soumettre une Évaluation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'soumettre_evaluation' 0 %}" id="soumettreEvaluationForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="note">Note</label>
+                        <input type="number" name="note" class="form-control" id="id_note">
+                    </div>
+                    <div class="form-group">
+                        <label for="titre">Titre</label>
+                        <input type="text" name="titre" class="form-control" id="id_titre">
+                    </div>
+                    <div class="form-group">
+                        <label for="commentaire">Commentaire</label>
+                        <textarea name="commentaire" class="form-control" id="id_commentaire"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="anonymat">Anonymat</label>
+                        <input type="checkbox" name="anonymat" class="form-check-input" id="id_anonymat">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Soumettre</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function setEnseignantId(enseignantId) {
+        var form = document.getElementById('soumettreEvaluationForm');
+        form.action = `/soumettre_evaluation/${enseignantId}/`;
+    }
+
+    $(document).ready(function() {
+        $('#basic-datatables').DataTable();
+
+        $('.launchDeleteModalEvaluation').click(function() {
+            var itemId = $(this).attr('data-id');
+            swal({
+                title: "Gestion des Évaluations",
+                text: "Voulez-vous vraiment supprimer cette évaluation ?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: `/evaluation-delete/${itemId}/`,
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                swal("Évaluation supprimée avec succès!", {
+                                    icon: "success",
+                                    buttons: {
+                                        confirm: {
+                                            text: "OK",
+                                            value: true,
+                                            visible: true,
+                                            className: "btn btn-success",
+                                            closeModal: true,
+                                        }
+                                    },
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('La suppression a échoué. Veuillez vérifier que cette évaluation n\'est pas liée à d\'autres enregistrements.');
+                        }
+                    });
+                } else {
+                    swal("Suppression annulée", {
+                        icon: "info",
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock content %}

@@ -1,0 +1,145 @@
+
+<!-- addOption Modal -->
+<div class="modal fade" id="addUtilisateur" tabindex="-1 " role="dialog " aria-hidden="true">
+    <div class="modal-dialog " role="document ">
+        <div class="modal-content ">
+            <div class="modal-header border-0 ">
+                    <h5 class="modal-title ">
+                        <span class="fw-mediumbold "> Nouvel</span>
+                        <span class="fw-light "> Utilisateur </span>
+                    </h5>
+                    <button type="button " class="close" data-dismiss="modal " aria-label="Close">
+                        <span aria-hidden="true ">&times;</span>
+                    </button>
+            </div>
+            
+                <div class="modal-body">
+                    <p class="small ">
+                      Saisissez les informations sur l'utilisateur ici en bas:
+                    </p>
+                    <form id="formAjouterUtilisateur">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group form-group-default ">
+                                    <label>Nom utilisateur</label>
+                                    <input id="loginUtilisateur" required name="login" type="text" class="form-control " />
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group form-group-default ">
+                                    <label>Prenom Nom Post-nom</label>
+                                    <input id="nomsUtilisateur" required name="noms" type="text" class="form-control " />
+                                </div>
+                            </div>
+                             <div class="col-12">
+                                    <div class="form-group">
+                                      <label for="">Selectionner Role</label>
+                                      <select class="form-control" name="roleUtilisateur" id="roleUtilisateur">
+                                        <option value='enseignant'>Enseignant</option>
+                                        <option value='proviseur'>Proviseur</option>
+                                        <option value='bibliothecaire'>Bibliothecaire</option>
+                                        <option value='secretaire'>Secretaire</option>
+                                      </select>
+                                    </div>
+                            </div>
+
+                            <div class="col-md-12 col-12">
+                                <div class="form-group form-group-default ">
+                                    <label>Groupes</label>
+                                    <div class="form-group">
+                                        <div class="selectgroup selectgroup-pills"> 
+                                        {% for groupe in groupes  %}
+                                          <label class="selectgroup-item">
+                                            <input
+                                              type="checkbox"
+                                              name="{{groupe.id}}"
+                                              value="{{groupe.id}}"
+                                              class="selectgroup-input groupeUtilisateur"
+                                            />
+                                            <span class="selectgroup-button">{{groupe.name}}</span>
+                                          </label>
+                                        {% endfor %}
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group form-group-default ">
+                                    <label>Mot de passe par defaut</label>
+                                    <input id="passwordDefaut" required name="passwordDefaut" type="text" class="form-control "/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="modal-footer border-0 ">
+                                <button type="button " class="btn btn-danger" id="submitCanceledUtilisateur"> Annuler </button>
+                                <button type="submit" id="submitClasse" class="btn btn-primary">  Créer </button>
+                            </div> 
+                         </div> 
+                    </form>
+                </div>
+        </div>
+    </div>
+</div>
+<script text="text/javascript">  
+    $('#submitCanceledUtilisateur').on('click', function(event) {
+        event.preventDefault();
+        $("#addUtilisateur").modal('hide'); 
+    }) 
+
+    $('#formAjouterUtilisateur').on('submit', function(event) {
+            event.preventDefault();  
+            var login = $('#loginUtilisateur').val()
+            var noms = $('#nomsUtilisateur').val()
+            var role = $('#roleUtilisateur').val()  
+            var password = $('#passwordDefaut').val()  
+            var selectedGroups = [];
+            $('.groupeUtilisateur:checked').each(function() {
+              selectedGroups.push($(this).val());
+            }); 
+          
+                $.ajax({
+                url: "{% url 'user-auth-register' %} ", 
+                type: 'POST',
+                data: {
+                    'login':login,
+                    'noms':noms,
+                    'role':role,
+                    'groups':selectedGroups,
+                    'password':password
+                },
+          
+            success: function(response) {
+                if (response.success) {
+                    swal("Gestion-Comptes", {
+                        icon: "",
+                        buttons: {
+                            confirm: {
+                                text: "Okay",
+                                value: true,
+                                visible: true,
+                                className: "btn btn-success",
+                                closeModal: true,
+                            },
+                        },
+                        text: "Utilisateur créée avec succès !",
+                        type: "info",
+                    }).then(() => {
+                        window.location.href = ''; // Redirect to classe URL
+                    });
+                } else {
+                    alert(response.message)
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Une erreur est parvenue')
+
+            }
+        });
+    });
+
+
+</script>
+

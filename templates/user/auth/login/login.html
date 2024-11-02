@@ -1,0 +1,161 @@
+{% load static %}
+<style>
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        padding: 40px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .logo {
+        display: block;
+        margin: 0 auto 20px;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+    .form-control {
+        height: 45px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        width: 100%;
+        border: 1px solid #ccc;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+        border-radius: 5px;
+        background-color: #339989;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 5px;
+    }
+
+    .btn-primary:hover {
+        background-color: #2a7a6b;
+    }
+
+    .login-card h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .login-card p {
+        color: #666;
+        margin-bottom: 30px;
+    }
+</style>
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "../../../composants/header.html" %}
+
+<body>
+    <div class="login-container">
+        {% if next %}
+        {% if user.is_authenticated %}
+        <p> Vous n'avez pas acces a la page d'accueil, veuillez d'abord vous connectez. Puisque votre compte n'a pas encore droit l'acces 
+    </p>
+        {% else %}
+        <p>Please login to see this page.</p>
+        {% endif %}
+        {% endif %}
+        
+        <div class="login-card">
+            <img src="{% static 'assets/img/unic.jpeg' %}" style="max-width: 109px; max-height: 100px; object-fit: fill; " alt="Logo Institution" class="logo rounded-circle">
+            <form method="POST">
+                {% csrf_token %} 
+
+                    <div class="form-group">
+                        <div class="row">
+            <p>Login</p>
+                        </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="password">Nom d'utilisateur</label>
+                                    <div class="input-icon">
+                                      <span class="input-icon-addon">
+                                        <i class="fa fa-user"></i>
+                                      </span>
+                                      <input
+                                      name="username"
+                                      id='username'
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="utilisateur"
+                                      />
+                                    </div>
+                                  </div>
+                            </div>
+                            
+                            <div class="col-12 mt-2">
+                                    <div class="form-group">
+                                        <label for="password">Mot de passe</label>
+                                        <div class="input-icon">
+                                            <span class="input-icon-addon">
+                                                <i class="fa fa-lock"></i>
+                                            </span>
+                                                <input
+                                                type="password"
+                                                class="form-control"
+                                                id="password" name="password"
+                                                classe="password"
+                                                placeholder="Mot de passe"
+                                                />
+                                            </div>
+                                      </div>
+                            </div>
+                            <div class="col-12 mt-3"> 
+                                <button type="submit" class="btn btn-secondary">Connexion</button>
+                            </div>
+                            <div class="col-12 mt-3"> 
+                                
+                                {% if error_message %}
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>{{error_message}}</strong>
+                                </div>
+                                {% endif %}
+                                    
+                               
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <style>
+                        .input {
+                            text-align: center;
+                        }
+                    </style>
+                    
+
+            </form>
+        </div>
+</body> 

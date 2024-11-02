@@ -1,0 +1,145 @@
+{% extends "../core/index.html" %} {% load static %} {% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header mb-0">
+            <h3 class="fw-bold mb-1">Gestion sections</h3>
+            <ul class="breadcrumbs mb-1">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">sections</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">section</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12 card">
+                <div class="card-header">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-md-6 col-4">
+                            <h4>section</h4>
+                        </div> 
+                            <div class="col-md-6 col-4 text-end">
+                                <button class="btn btn-secondary btn-round" data-bs-toggle="modal" data-bs-target="#modelAddsections">
+                                    <i class="fa fa-plus" title='ajouter une nouvelle option option'></i> Ajouter section
+                                </button>
+                            </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <table               id="basic-datatables"
+                    class="display table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Designation</th>
+                                <th scope="col" class='text-center'>Actions</th>
+                            </tr>
+        
+                        </thead>
+                       
+                        <tbody>
+                            {% for section in sections %}
+                            <tr>
+                                <td>{{ forloop.counter }}
+                                </td>
+                                <td>{{section.designation}}</td>
+                                <td class='text-center'>
+                                    <button class="btn btn-primary ms-auto launchEditsections" data-bs-target="#modelEditersections" data-bs-toggle="modal"  data-id="{{ section.id }}"
+                                    data-designation="{{section.designation}}"
+                                    >
+                                    <i class="fa fa-edit text-light"></i>
+                                </button>
+                                    <button class="btn btn-danger launchDeleteModalsections"  data-id="{{ section.id }}"
+                                    >
+                                <i class="fa fa-trash text-light "></i> 
+                            </button>
+        
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+
+{% include './add.html' %}
+{% include './adit.html' %}
+
+<script text="text-javascript">
+        $('.launchDeleteModalsections').click(function() {
+        var itemId = $(this).attr('data-id');
+        var content = {};
+        content.icon = "fa fa-bell";
+        content.message = "Enregistrement section supprimée avec succès."
+
+        // Show confirmation dialog
+        swal({
+            title: "Gestion section",
+            text: "Est ce que vous voulez vraiment supprimer cette section",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                // Proceed with deletion if confirmed
+                $.ajax({
+                    url: `/section-delete/${itemId}/`,
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            swal("Gestion-section", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "btn btn-success",
+                                        closeModal: true,
+                                    },
+                                },
+                                text: "section supprimée avec succès !",
+                                type: "info",
+                            }).then(() => {
+                                window.location.href = ""; // Redirect to inscription URL
+                            });
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Suppression non effectuée, veuillez verifier que cette section nest pas relation avec les autres enregistrements')
+                    }
+                });
+            } else {
+                swal("Suppression annulée", {
+                    icon: "info",
+                });
+            }
+        });
+    });
+</script>
+{% endblock content %}

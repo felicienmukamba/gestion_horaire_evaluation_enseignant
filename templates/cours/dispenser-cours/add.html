@@ -1,0 +1,107 @@
+<!-- Modal -->
+<div class="modal fade" id="modelAdddispenser" tabindex="-1" role="dialog"  aria-hidden="true"> 
+    <div class="modal-dialog" role="document"> 
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Ajouter dispenser</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+            <form  id="submitFormdispenser">
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <select required class="form-control form-control" name="vacation" id="">
+                            <option>Selectionner vacation</option>
+                            <option value="Jour">Jour</option>
+                            <option value="Soir">Soir</option>
+                        </select>
+                        <div class="form-group">
+                            <label for="">Prester</label>
+                            <input type="checkbox" class="" name="prester" id="" aria-describedby="helpId" placeholder="Prester">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="">Date</label>
+                            <input required type="date" class="form-control" name="date" id="" aria-describedby="helpId" placeholder="Date">
+                        </div>
+                        
+                        <div class="form-group">
+                            <select required class="form-control form-control" name="cours" id="">
+                                <option>Selectionner cours</option>
+                                {% for cour in cours   %}
+                                <option value="{{cour.id}}">{{cour.designation}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select required class="form-control form-control" name="promotion" id="">
+                                <option>Selectionner promotion</option>
+                                {% for promotion in promotions   %}
+                                <option value="{{promotion.id}}">{{promotion.designation}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select required class="form-control form-control" name="departement" id="">
+                                <option>Selectionner departement</option>
+                                {% for departement in departements   %}
+                                <option value="{{departement.id}}">{{departement.designation}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select required class="form-control form-control" name="salle" id="">
+                                <option>Selectionner salles</option>
+                                {% for salle in salles   %}
+                                <option value="{{salle.id}}">{{salle.designation}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select required class="form-control form-control" name="anneeAcademique" id="">
+                                <option>Selectionner Année academique</option>
+                                {% for anneeAcademique in anneeAcademiques   %}
+                                <option value="{{anneeAcademique.id}}">{{anneeAcademique.designation}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id='submitCanceledPonderForm' data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+                
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#submitCanceledPonderForm').on('click', function(event) {
+        event.preventDefault();
+        $("#modelAdddispenser").modal('hide'); 
+    }) 
+
+    $('#submitFormdispenser').on('submit', function(event){
+        event.preventDefault(); 
+        const formData = new FormData(this);
+        $.ajax({
+            url: "{% url 'dispenser-cours-add'  %}", 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('Ajout de la ponderation effectué avec succès'); 
+                window.location.href = "{% url 'dispenser-cours-list' %}"; 
+            },
+            error: function(error) {
+                alert('Une errreur est survenue, veuillez verifier si le cours du dispenser et classe que vous voulez creer nexiste pas deja');
+            }
+        });
+
+    })
+</script>

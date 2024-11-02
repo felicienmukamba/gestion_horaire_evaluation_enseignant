@@ -1,0 +1,50 @@
+{% extends "../../core/index.html" %} {% load static %} {% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div
+      class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+    >
+      <div class="page-header">
+        <h3 class="fw-bold mb-3">Disponibilité de l'enseignant</h3>
+        <ul class="breadcrumbs mb-3">
+          <li class="nav-home">
+            <a href="#">
+              <i class="icon-home"></i>
+            </a>
+          </li>
+          <li class="separator">
+            <i class="icon-arrow-right"></i>
+          </li>
+          <li class="separator">
+            <i class="icon-arrow-right"></i>
+          </li>
+          <li class="nav-item">
+            <a href="#">Modifier la Disponibilité de l'enseignant</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-6 card">
+        <div class="card-header">
+          <div class="card-title">Disponibilité de l'enseignant</div>
+        </div>
+        <form method="post">
+          {% csrf_token %}
+          <div class="card-body">
+                <div class="form-group">
+                <label for="email2">Intitulé</label>
+                {{form}}
+                </div>
+            </div>
+            <div class="card-action">
+              <button type="submit" class="btn btn-success">Sauvegarder</button>
+              <button type="reset" class="btn btn-danger">Annuler</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

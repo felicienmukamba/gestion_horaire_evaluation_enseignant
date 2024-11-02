@@ -1,0 +1,74 @@
+{% extends "../../core/index.html" %} {% load static %} {% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div
+      class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+    >
+      <div class="page-header">
+        <h3 class="fw-bold mb-3">Gestion Etudiants</h3>
+        <ul class="breadcrumbs mb-3">
+          <li class="nav-home">
+            <a href="#">
+              <i class="icon-home"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="ms-md-auto py-2 py-md-0">
+        <a href="{% url 'etudiant-add' %}" class="btn btn-primary btn-round">Ajouter</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              id="basic-datatables"
+              class="display table table-striped table-hover"
+            >
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>nom</th>
+                   <th>postnom</th>
+                   <th>prenom</th>
+                   <th>sexe</th>
+                   <th>promotion</th>
+                   <th>departement</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for etudiant in etudiants %}
+                <tr>
+                <td>{{etudiant.id}}</td>
+                <td>{{etudiant.nom}}</td>
+                <td>{{etudiant.postnom}}</td>
+                <td>{{etudiant.prenom}}</td>
+                <td>{{etudiant.sexe}}</td>
+                <td>{{etudiant.promotion}}</td>
+                <td>{{etudiant.departement}}</td>
+                <td>
+                 <form action="{% url 'etudiant-edit' etudiant.id  %}" method="post">
+                  {% csrf_token %}
+                  <button
+                  type="submit"
+                  title="modifier"
+                  class="btn btn-primary ms-auto"
+                >edit
+                <i class="fa fa-edit text-light"></i>
+                </button>
+                
+                 </form>
+                </td> 
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,59 @@
+{% extends "../core/index.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="page-inner">
+        <div class="page-header mb-0">
+            <h3 class="fw-bold mb-1">Soumettre une Évaluation pour {{ enseignant.nom }} {{ enseignant.prenom }}</h3>
+            <ul class="breadcrumbs mb-1">
+                <li class="nav-home">
+                    <a href="#">
+                        <i class="icon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Évaluations</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Soumettre</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12 card">
+                <div class="card-header">
+                    <h4>Soumettre une Évaluation</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'soumettre_evaluation' enseignant.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="note">Note</label>
+                            {{ form.note }}
+                        </div>
+                        <div class="form-group">
+                            <label for="titre">Titre</label>
+                            {{ form.titre }}
+                        </div>
+                        <div class="form-group">
+                            <label for="commentaire">Commentaire</label>
+                            {{ form.commentaire }}
+                        </div>
+                        <div class="form-group">
+                            <label for="anonymat">Anonymat</label>
+                            {{ form.anonymat }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Soumettre</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

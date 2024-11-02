@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "../composants/header.html" %}
+
+<body>
+    <main>
+        <div class="wrapper">
+            {% include "./sidebar.html" %}
+            <div class="main-panel">
+                <div class="main-header">
+                    <div class="main-header-logo">
+                        <!-- Logo Header -->
+                        <div class="logo-header" data-background-color="dark">
+                            <a href="index.html" class="logo">
+                                <img src='{% static user.avatar %}' alt="navbar brand" class="navbar-brand" height="20" />
+                            </a>
+
+                            <div class="nav-toggle">
+                                <button class="btn btn-toggle toggle-sidebar">
+                                    <i class="gg-menu-right"></i>
+                                </button>
+                                <button class="btn btn-toggle sidenav-toggler">
+                                    <i class="gg-menu-left"></i>
+                                </button>
+                            </div>
+                            <button class="topbar-toggler more">
+                                <i class="gg-more-vertical-alt"></i>
+                            </button>
+                        </div>
+                        <!-- End Logo Header -->
+                    </div>
+                    <!-- Navbar Header -->
+                    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                        <div class="container-fluid">
+                            <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="submit" class="btn btn-search pe-1">
+                                            <i class="fa fa-search search-icon"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" placeholder="Search ..." class="form-control" />
+                                </div>
+                            </nav>
+
+
+                            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                                <li class="nav-item topbar-user dropdown hidden-caret">
+                                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                                        {% if user.is_authenticated %}
+                                        <div class="avatar-sm">
+                                            <img src="{% static 'assets/img/avatar.png' %}" alt="..." class="avatar-img rounded-circle" />
+                                        </div>
+                                        <span class="profile-username">
+                                        <span class="fw-bold text-uppercase">{{request.user}}</span>
+                                        {% else %}
+                                        <span class="fw-bold btn btn-dark text-uppercase">CONNEXION</span>
+                                        {% endif %}
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                        <div class="dropdown-user-scroll scrollbar-outer">
+                                            <li>
+                                                <div class="user-box">
+                                                    <div class="avatar-lg">
+                                                <img src="{% static 'assets/img/avatar.png' %}" alt="not found" class="avatar-img rounded" />
+                                                    </div>
+                                                    <div class="u-text">
+                                                        {% if user.is_authenticated %}
+                                                        <h4 class="btn btn-xs btn-secondary btn-sm text-uppercase">{{request.user}}</h4>
+                                                        {% else %}
+                                                        <span class="fw-bold text-uppercase">CONNEXION</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            
+                                            <li>
+                                                <div class="dropdown-divider"></div>
+                                                {% if user.is_authenticated %}
+                                                <a class="dropdown-item" href="{% url 'dashbord' %}">Dashboard</a>
+                                                <div class="dropdown-divider"></div>
+                                                {% endif %}
+                                                <a class="dropdown-item" href="{% url 'home' %}">Accueil</a>
+                                                {% if user.is_authenticated %}
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="{% url 'user-auth-logout' %}">Logout</a>
+                                                {% endif %}
+                                                {% if not user.is_authenticated %}
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="{% url 'user-auth-login' %}">Login</a>
+                                                {% endif %}
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <!-- End Navbar -->
+                </div>
+                {% block content %} 
+                
+                
+                {% endblock content %} 
+                
+                
+                {% include "../composants/footer.html" %}
+
+
+            </div>
+
+            <!-- Custom template | don't include it in your project! -->
+
+            {% comment %} <div class="custom-template">
+                <div class="title">Settings</div>
+                <div class="custom-content">
+                    <div class="switcher">
+                        <div class="switch-block">
+                            <h4>Logo Header</h4>
+                            <div class="btnSwitch">
+                                <button type="button" class="selected changeLogoHeaderColor" data-color="dark"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="blue"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="purple"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="light-blue"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="green"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="orange"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="red"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="white"></button>
+                                <br />
+                                <button type="button" class="changeLogoHeaderColor" data-color="dark2"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="blue2"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="purple2"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="light-blue2"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="green2"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="orange2"></button>
+                                <button type="button" class="changeLogoHeaderColor" data-color="red2"></button>
+                            </div>
+                        </div>
+                        <div class="switch-block">
+                            <h4>Navbar Header</h4>
+                            <div class="btnSwitch">
+                                <button type="button" class="changeTopBarColor" data-color="dark"></button>
+                                <button type="button" class="changeTopBarColor" data-color="blue"></button>
+                                <button type="button" class="changeTopBarColor" data-color="purple"></button>
+                                <button type="button" class="changeTopBarColor" data-color="light-blue"></button>
+                                <button type="button" class="changeTopBarColor" data-color="green"></button>
+                                <button type="button" class="changeTopBarColor" data-color="orange"></button>
+                                <button type="button" class="changeTopBarColor" data-color="red"></button>
+                                <button type="button" class="selected changeTopBarColor" data-color="white"></button>
+                                <br />
+                                <button type="button" class="changeTopBarColor" data-color="dark2"></button>
+                                <button type="button" class="changeTopBarColor" data-color="blue2"></button>
+                                <button type="button" class="changeTopBarColor" data-color="purple2"></button>
+                                <button type="button" class="changeTopBarColor" data-color="light-blue2"></button>
+                                <button type="button" class="changeTopBarColor" data-color="green2"></button>
+                                <button type="button" class="changeTopBarColor" data-color="orange2"></button>
+                                <button type="button" class="changeTopBarColor" data-color="red2"></button>
+                            </div>
+                        </div>
+                        <div class="switch-block">
+                            <h4>Sidebar</h4>
+                            <div class="btnSwitch">
+                                <button type="button" class="changeSideBarColor" data-color="white"></button>
+                                <button type="button" class="selected changeSideBarColor" data-color="dark"></button>
+                                <button type="button" class="changeSideBarColor" data-color="dark2"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-toggle">
+                    <i class="icon-settings"></i>
+                </div>
+            </div> {% endcomment %}
+
+            <!-- End Custom template -->
+        </div>
+
+
+    </main>
+
+
+
+    {% include "../composants/scriptlinks.html" %}
+
+    <script>
+        // Include CSRF token in all AJAX requests
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    // Only send the token to relative URLs i.e. locally.
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    </script>
+    {% block extra_script %} {% endblock %}
+</body>
+
+</html>

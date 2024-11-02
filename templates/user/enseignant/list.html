@@ -1,0 +1,72 @@
+{% extends "../../core/index.html" %} {% load static %} {% block content %}
+<div class="container">
+  <div class="page-inner">
+    <div
+      class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+    >
+      <div class="page-header">
+        <h3 class="fw-bold mb-3">Enseignants</h3>
+        <ul class="breadcrumbs mb-3">
+          <li class="nav-home">
+            <a href="#">
+              <i class="icon-home"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="ms-md-auto py-2 py-md-0">
+        <a href="{% url 'enseignant-add' %}" class="btn btn-primary btn-round">Ajouter</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              id="basic-datatables"
+              class="display table table-striped table-hover"
+            >
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>titreAcademique</th>
+                  <th>nom</th>
+                   <th>postnom</th>
+                   <th>prenom</th>
+                   <th>sexe</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for enseignant in enseignants %}
+                <tr>
+                <td>{{enseignant.id}}</td>
+                <td>{{enseignant.titreAcademique}}</td>
+                <td>{{enseignant.nom}}</td>
+                <td>{{enseignant.postnom}}</td>
+                <td>{{enseignant.prenom}}</td>
+                <td>{{enseignant.sexe}}</td>
+                <td>
+                    <form action="{% url 'enseignant-edit' enseignant.id  %}" method="post">
+                        {% csrf_token %}
+                        <button
+                        type="submit"
+                        title="modifier"
+                        class="btn btn-primary ms-auto"
+                      >edit
+                      <i class="fa fa-edit text-light"></i>
+                      </button>
+                      
+                       </form>
+                </td> 
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

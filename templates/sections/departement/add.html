@@ -1,0 +1,64 @@
+<!-- Modal -->
+<div class="modal fade" id="modelAdddepartement" tabindex="-1" role="dialog"  aria-hidden="true"> 
+    <div class="modal-dialog" role="document"> 
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Ajouter departement</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+            <form  id="submitFormdepartement">
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">Designation</label>
+                            <input required type="text" class="form-control" name="designation" id="" aria-describedby="helpId" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <select required class="form-control form-control" name="section" id="">
+                                <option value="">Selectionner section</option>
+                            {% for section in sections   %}
+                                <option value="{{section.id}}">{{section.designation}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id='submitCanceledPonderForm' data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+                
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#submitCanceledPonderForm').on('click', function(event) {
+        event.preventDefault();
+        $("#modelAdddepartement").modal('hide'); 
+    }) 
+
+    $('#submitFormdepartement').on('submit', function(event){
+        event.preventDefault(); 
+        const formData = new FormData(this);
+        $.ajax({
+            url: "{% url 'departement-add'  %}", 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('Ajout de la departement effectué avec succès'); 
+                window.location.href = "{% url 'departement-list' %}"; 
+            },
+            error: function(error) {
+                alert('Une errreur est survenue, veuillez verifier si la departement du departement et section que vous voulez creer nexiste pas deja');
+            }
+        });
+
+    })
+</script>

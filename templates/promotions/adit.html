@@ -1,0 +1,77 @@
+<!-- Modal -->
+<div class="modal fade" id="modelEditerpromotions" tabindex="-1" role="dialog"  aria-hidden="true"> 
+    <div class="modal-dialog" role="document"> 
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Ajouter Ponderation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+            <form  id="submitFormpromotionsEdit">
+                    <span id="idpromotions" hidden></span>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">designation</label>
+                            <input required type="text" class="form-control" name="designation" id="designationpromotions" aria-describedby="helpId" placeholder="">
+                            <small id="helpId" class="form-text text-muted">designation</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id='submitCanceledpromotionsFormEdit' data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+                
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#submitCanceledpromotionsFormEdit').on('click', function(event) {
+        event.preventDefault();
+        $("#modelEditerpromotions").modal('hide'); 
+    }) 
+
+    $('.launchEditpromotions').click(function() {
+        var itemId = $(this).data('id');
+        
+        $('#idpromotions').val(itemId) 
+
+        var designation = $(this).attr('data-designation'); 
+
+        var promotions = $(this).attr('data-promotions');
+
+
+
+        $("#designationpromotions").val(designation)
+
+
+
+    }) 
+    
+    $('#submitFormpromotionsEdit').on('submit', function(event){
+        event.preventDefault(); 
+        const formData = new FormData(this); 
+            // Remove classe and promotions keys
+        formData.delete('promotions');
+       var itemId=  $('#idpromotions').val() 
+        $.ajax({
+            url: `/promotion-edit/${itemId}/`, 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('Modification de la ponderation effectué avec succès'); 
+                window.location.href = ""; 
+            },
+            error: function(error) {
+                alert('Une errreur est survenue');
+            }
+        });
+
+    })
+</script>

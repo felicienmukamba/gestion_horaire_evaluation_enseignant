@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="text-center py-4">
+        <h1 class="display-4">Bienvenue à l'Institut Pédagogique de Bukavu</h1>
+        <p class="lead">Excellence en Formation des Enseignants</p>
+    </div>
+
+    <div class="card shadow-sm mb-5">
+        <div class="d-flex justify-content-between align-items-center p-3 bg-primary text-white rounded-top">
+            <h5 class="mb-0">Horaire des Cours</h5>
+            <a href="{% url 'horaire-list' %}" class="btn btn-light text-primary" target="_blank" title="Télécharger l'horaire">Imprimer l'horaire</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <img src="{% static 'assets/img/isp.jpg' %}" width="100%" alt="Horaires des cours">
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center py-4">
+        <h2>Nos Sections</h2>
+        <div class="row gy-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <img class="card-img-top" src="{% static 'assets/img/section1.jpg' %}" alt="Section de Sciences">
+                    <div class="card-body">
+                        <h5 class="card-title">Section des Sciences</h5>
+                        <p class="card-text">Explorez nos programmes en biologie, chimie, physique et plus encore.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <img class="card-img-top" src="{% static 'assets/img/section2.jpg' %}" alt="Section des Arts">
+                    <div class="card-body">
+                        <h5 class="card-title">Section des Arts</h5>
+                        <p class="card-text">Découvrez nos cours en histoire, littérature, philosophie et plus.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <img class="card-img-top" src="{% static 'assets/img/section3.jpg' %}" alt="Section de Technologie">
+                    <div class="card-body">
+                        <h5 class="card-title">Section de Technologie</h5>
+                        <p class="card-text">Apprenez les dernières avancées en informatique, ingénierie et technologie.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center py-4">
+        <h2>Qui sommes-nous</h2>
+        <p>
+            L'Institut Pédagogique de Bukavu est dédié à la formation des enseignants de demain. Nos programmes rigoureux et nos 
+            équipes pédagogiques dévouées s'assurent que chaque étudiant reçoit une éducation de qualité, préparant les futurs 
+            enseignants à exceller dans leurs carrières.
+        </p>
+    </div>
+</div>
+
+{% endblock content %}
+

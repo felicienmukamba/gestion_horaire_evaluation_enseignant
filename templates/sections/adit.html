@@ -1,0 +1,96 @@
+<!-- Modal -->
+<div class="modal fade" id="modelEditerfacultes" tabindex="-1" role="dialog"  aria-hidden="true"> 
+    <div class="modal-dialog" role="document"> 
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Ajouter Ponderation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+            <form  id="submitFormfacultesEdit">
+                    <span id="idfacultes" hidden></span>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">designation</label>
+                            <input required type="text" class="form-control" name="designation" id="designationfacultes" aria-describedby="helpId" placeholder="">
+                            <small id="helpId" class="form-text text-muted">designation</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id='submitCanceledfacultesFormEdit' data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+                
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#submitCanceledfacultesFormEdit').on('click', function(event) {
+        event.preventDefault();
+        $("#modelEditerfacultes").modal('hide'); 
+    }) 
+
+    $('.launchEditfacultes').click(function() {
+        var itemId = $(this).data('id');
+        
+        $('#idfacultes').val(itemId) 
+
+        var designation = $(this).attr('data-designation'); 
+
+        var facultes = $(this).attr('data-facultes');
+
+
+
+        $("#designationfacultes").val(designation)
+
+
+
+    }) 
+    
+    $('#submitFormfacultesEdit').on('submit', function(event){
+        event.preventDefault(); 
+        const formData = new FormData(this); 
+            // Remove classe and facultes keys
+        formData.delete('facultes');
+       var itemId=  $('#idfacultes').val() 
+        $.ajax({
+            url: `/faculte-edit/${itemId}/`, 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            
+            success: function(response) {
+                        if (response.success) {
+                            swal("Gestion-faculte", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "btn btn-success",
+                                        closeModal: true,
+                                    },
+                                },
+                                text: "faculte modifiée avec succès !",
+                                type: "info",
+                            }).then(() => {
+                                window.location.href = ""; // Redirect to inscription URL
+                            });
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(error) {
+                alert('Une errreur est survenue');
+            }
+        });
+
+    })
+</script>

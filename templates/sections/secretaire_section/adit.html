@@ -1,0 +1,91 @@
+<!-- Modal -->
+<div class="modal fade" id="modelEditersecretaire_section" tabindex="-1" role="dialog"  aria-hidden="true"> 
+    <div class="modal-dialog" role="document"> 
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Modifier secretaire_section</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+            <form  id="submitFormsecretaire_sectionEdit">
+                    <span id="idsecretaire_section" hidden></span>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">Actif</label>
+                            <input required type="checkbox"  name="actif"  id="secretaire_sectionactif" aria-describedby="helpId" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <select required class="form-control " name="enseignant" id="">
+                                <option value="">Selectionner un enseignant</option>
+                            {% for enseignant in enseignants   %}
+                                <option value="{{enseignant.id}}">{{enseignant.nom}} {{enseignant.prenom}}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        <div class="form-group">
+                            <select required class="form-control " name="section" id="">
+                                <option value="">Selectionner section</option>
+                            {% for section in sections   %}
+                                <option value="{{section.id}}">{{section.designation}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id='submitCanceledsecretaire_sectionFormEdit' data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+                
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#submitCanceledsecretaire_sectionFormEdit').on('click', function(event) {
+        event.preventDefault();
+        $("#modelEditersecretaire_section").modal('hide'); 
+    }) 
+
+    $('.launchEditsecretaire_section').click(function() {
+        var itemId = $(this).data('id');
+        
+        $('#idsecretaire_section').val(itemId) 
+
+        var designation = $(this).attr('data-designation'); 
+
+        var secretaire_section = $(this).attr('data-secretaire_section');
+
+
+
+        $("#designationsecretaire_section").val(designation)
+
+
+
+    }) 
+    
+    $('#submitFormsecretaire_sectionEdit').on('submit', function(event){
+        event.preventDefault(); 
+        const formData = new FormData(this); 
+            // Remove classe and secretaire_section keys
+        formData.delete('secretaire_section');
+       var itemId=  $('#idsecretaire_section').val() 
+        $.ajax({
+            url: `/secretaire_section-edit/${itemId}/`, 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('Modification de la ponderation effectué avec succès'); 
+                window.location.href = ""; 
+            },
+            error: function(error) {
+                alert('Une errreur est survenue');
+            }
+        });
+
+    })
+</script>

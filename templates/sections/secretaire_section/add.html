@@ -1,0 +1,72 @@
+<!-- Modal -->
+<div class="modal fade" id="modelAddsecretaire_section" tabindex="-1" role="dialog"  aria-hidden="true"> 
+    <div class="modal-dialog" role="document"> 
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Ajouter secretaire_section</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+            <form  id="submitFormsecretaire_section">
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">Actif</label>
+                            <input required type="checkbox"  name="actif" id="" aria-describedby="helpId" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <select required class="form-control " name="enseignant" id="">
+                                <option value="">Selectionner un enseignant</option>
+                            {% for enseignant in enseignants   %}
+                                <option value="{{enseignant.id}}">{{enseignant.nom}} {{enseignant.prenom}}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        <div class="form-group">
+                            <select required class="form-control " name="faculte" id="">
+                                <option value="">Selectionner faculte</option>
+                            {% for faculte in facultes   %}
+                                <option value="{{faculte.id}}">{{faculte.designation}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id='submitCanceledPonderForm' data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+                
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#submitCanceledPonderForm').on('click', function(event) {
+        event.preventDefault();
+        $("#modelAddsecretaire_section").modal('hide'); 
+    }) 
+
+    $('#submitFormsecretaire_section').on('submit', function(event){
+        event.preventDefault(); 
+        const formData = new FormData(this);
+        $.ajax({
+            url: "{% url 'secretaire_section-add'  %}", 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('Ajout de la secretaire_section effectué avec succès'); 
+                window.location.href = "{% url 'secretaire_section-list' %}"; 
+            },
+            error: function(error) {
+                alert('Une errreur est survenue, veuillez verifier si la secretaire_section du secretaire_section et faculte que vous voulez creer nexiste pas deja');
+            }
+        });
+
+    })
+</script>

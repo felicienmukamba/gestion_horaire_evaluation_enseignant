@@ -1,0 +1,83 @@
+<!-- Modal -->
+<div class="modal fade" id="modelEditerdepartement" tabindex="-1" role="dialog"  aria-hidden="true"> 
+    <div class="modal-dialog" role="document"> 
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Ajouter Ponderation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+            <form  id="submitFormdepartementEdit">
+                    <span id="iddepartement" hidden></span>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">designation</label>
+                            <input required type="text" class="form-control" name="designation" id="designationdepartement" aria-describedby="helpId" placeholder="">
+                            <small id="helpId" class="form-text text-muted">designation</small>
+                        </div>
+                        <div class="form-group">
+                            <select required class="form-control form-control" name="faculte" id="">
+                                <option value="">Selectionner faculte</option>
+                            {% for faculte in facultes   %}
+                                <option value="{{faculte.id}}">{{faculte.designation}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id='submitCanceleddepartementFormEdit' data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#submitCanceleddepartementFormEdit').on('click', function(event) {
+        event.preventDefault();
+        $("#modelEditerdepartement").modal('hide'); 
+    }) 
+
+    $('.launchEditdepartement').click(function() {
+        var itemId = $(this).data('id');
+        
+        $('#iddepartement').val(itemId) 
+
+        var designation = $(this).attr('data-designation'); 
+
+        var departement = $(this).attr('data-departement');
+
+
+
+        $("#designationdepartement").val(designation)
+
+
+
+    }) 
+    
+    $('#submitFormdepartementEdit').on('submit', function(event){
+        event.preventDefault(); 
+        const formData = new FormData(this); 
+            // Remove classe and departement keys
+        formData.delete('departement');
+       var itemId=  $('#iddepartement').val() 
+        $.ajax({
+            url: `/departement-edit/${itemId}/`, 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('Modification de la ponderation effectué avec succès'); 
+                window.location.href = ""; 
+            },
+            error: function(error) {
+                alert('Une errreur est survenue');
+            }
+        });
+
+    })
+</script>

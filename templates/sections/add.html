@@ -1,0 +1,75 @@
+<!-- Modal -->
+<div class="modal fade" id="modelAddsections" tabindex="-1" role="dialog"  aria-hidden="true"> 
+    <div class="modal-dialog" role="document"> 
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Ajouter sections</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+            <form  id="submitFormsections">
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <label for="">Designation</label>
+                            <input required type="text" class="form-control" name="designation" id="" aria-describedby="helpId" placeholder="">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id='submitCanceledPonderForm' data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-secondary">Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+                
+            </div>
+    </div>
+</div>
+
+<script>
+    $('#submitCanceledPonderForm').on('click', function(event) {
+        event.preventDefault();
+        $("#modelAddsections").modal('hide'); 
+    }) 
+
+    $('#submitFormsections').on('submit', function(event){
+        event.preventDefault(); 
+        const formData = new FormData(this);
+        $.ajax({
+            url: "{% url 'section-add'  %}", 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            
+            success: function(response) {
+                        if (response.success) {
+                            swal("Gestion-section", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "btn btn-success",
+                                        closeModal: true,
+                                    },
+                                },
+                                text: "section enregistrement avec succès !",
+                                type: "info",
+                            }).then(() => {
+                                window.location.href = ""; // Redirect to inscription URL
+                            });
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(error) {
+                alert('Une errreur est survenue, veuillez verifier si la ponderation du sections et classe que vous voulez creer nexiste pas deja');
+            }
+        });
+
+    })
+</script>
